@@ -23,7 +23,7 @@ CREATE TABLE users (
     user_id int(11) NOT NULL default '0',
     subject char(255) NOT NULL default '',
     body char(255) NOT NULL default '',
-    date_sent DATE,
+    date_sent DATE NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -34,6 +34,6 @@ CREATE TABLE users (
     id int(11) NOT NULL auto_increment,
     message_id int(11) NOT NULL default '0',
     reader_id int(11) NOT NULL default '0',
-    date_read DATE,
+    date_read DATE NOT NULL,
     PRIMARY KEY (id)
 );
