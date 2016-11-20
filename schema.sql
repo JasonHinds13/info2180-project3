@@ -6,7 +6,7 @@ USE cheapomail;
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
-    id int(11) NOT NULL auto_increment,
+    id int NOT NULL auto_increment,
     firstname char(255) NOT NULL default '',
     lastname char(255) NOT NULL default '',
     username char(255) NOT NULL default '',
@@ -18,12 +18,12 @@ CREATE TABLE users (
 
 DROP TABLE IF EXISTS messages;
 CREATE TABLE users (
-    id int(11) NOT NULL auto_increment,
-    recipient_id int(11) NOT NULL default '0',
-    user_id int(11) NOT NULL default '0',
+    id int NOT NULL auto_increment,
+    recipient_id int NOT NULL default '0',
+    user_id int NOT NULL default '0',
     subject char(255) NOT NULL default '',
     body char(255) NOT NULL default '',
-    date_sent DATE NOT NULL,
+    date_sent DATE NOT NULL default CURDATE(),
     PRIMARY KEY (id)
 );
 
@@ -31,9 +31,9 @@ CREATE TABLE users (
 
 DROP TABLE IF EXISTS messages_read;
 CREATE TABLE users (
-    id int(11) NOT NULL auto_increment,
-    message_id int(11) NOT NULL default '0',
-    reader_id int(11) NOT NULL default '0',
-    date_read DATE NOT NULL,
+    id int NOT NULL auto_increment,
+    message_id int NOT NULL default '0',
+    reader_id int NOT NULL default '0',
+    date_read DATE NOT NULL default CURDATE(),
     PRIMARY KEY (id)
 );
