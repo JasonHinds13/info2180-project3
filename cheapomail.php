@@ -7,7 +7,8 @@ $dbname = 'cheapomail';
 
 // For sessions
 // session_start();
-// $_SESSION["user"] = "this user";
+// $_SESSION["username"] = "this user";
+// $_SESSION["user_id"] = "this";
 // session_unset(); //remove all session variables
 // session_destroy();
 
@@ -39,7 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     // user id to recieve mail
-    $rcvr = $_GET["id"];
+    //$rcvr = $_SESSION["user_id"];
+    $rcvr = $_GET["id"]; //can get their username instead
     
     if (isset($rcver)){
         getMail($rcvr);
@@ -77,6 +79,8 @@ function sendMail($senr, $recp, $subj, $body){
     $m = $stmt->fetch();
     $sid = $m["id"];
     
+    $cdate = date("Y/m/d");
+    
     //insert message for each recipient
     foreach($recps as $recp){
     
@@ -85,7 +89,7 @@ function sendMail($senr, $recp, $subj, $body){
         $rid = $s["id"];
     
         // query to be sent
-        $q = "INSERT INTO messages(recipient_id, user_id, subject, body) VALUES($sid, $rid,$subj, $body)";
+        $q = "INSERT INTO messages(recipient_id, user_id, subject, body, date_sent) VALUES($sid, $rid,$subj, $body, $cdate)";
     
         $stmt3 = $conn->exec($q);
     }
