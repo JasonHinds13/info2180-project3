@@ -12,7 +12,12 @@ $dbname = 'cheapomail';
 // session_unset(); //remove all session variables
 // session_destroy();
 
-$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+try{
+    $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+}
+catch(PDOException $e){
+    echo $e;
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      
@@ -20,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fname = $_POST["firstname"];
     $lname = $_POST["lastname"];
     $uname = $_POST["username"];
-    $pword = $_POST["password"];
+    $pword = hash('sha256', $_POST["password"]);
 
     // mail to be sent
     $senr = $_POST["sender"];
@@ -28,8 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $recps = $_POST["recipients"];
     $body = $_POST["body"];
     
-    if (isset($uname) && isset($pword) ){
-        createUser($fname, $lname, $uname, $pword);
+    if (isset($uname) && isset($pword) && isset($fname) && isset($lname)){
+        $sql = "INSERT INTO users(firstname, lastname, username, password) VALUES('$fname', '$lname', '$uname', '$pword');";
+        $stmt = $conn->query($sql);
     }
     
     else if (isset($senr) && isset($recps) ){
@@ -49,11 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 
 // functions to be used
-
-function createUser($fname, $lname, $uname, $pword){
-    
-    $stmt = $conn->exec("INSERT INTO users(firstname, lastname, username, password) VALUES($fname, $lname, $uname, $pword)");
-}
 
 function getMail($rcvr){
     
