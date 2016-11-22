@@ -33,13 +33,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $recps = $_POST["recipients"];
     $body = $_POST["body"];
     
+    //add a user
     if (isset($uname) && isset($pword) && isset($fname) && isset($lname)){
         $sql = "INSERT INTO users(firstname, lastname, username, password) VALUES('$fname', '$lname', '$uname', '$pword');";
         $stmt = $conn->query($sql);
+        echo 'Successfully Added User';
     }
     
-    else if (isset($senr) && isset($recps) ){
-        sendMail($senr, $recps, $subj, $body);
+    //send a message
+    else if (isset($senr) && isset($recps) && isset($subj) && isset($body)){
+        
+        //get id of sender
+        $stmt = $conn->query("SELECT id FROM users WHERE username = $senr");
+        $m = $stmt->fetch();
+        $sid = $m["id"];
+    
+        $cdate = date("Y/m/d");
+    
+        //insert message for each recipient
+        foreach($recps as $recp){
+            
+            //get id of receiver
+            $stmt2 = $conn->query("SELECT id FROM users WHERE username = $recp");
+            $s = $stmt2->fetch();
+            $rid = $s["id"];
+    
+            // query to be sent
+            $q = "INSERT INTO messages(recipient_id, user_id, subject, body, date_sent) VALUES('$sid', '$rid', '$subj', '$body', '$cdate');";
+            $stmt3 = $conn->query($q);
+        }
+        
+        echo 'Message Sent';
     }
 }
 
@@ -70,28 +94,5 @@ function getMail($rcvr){
             
         header('Content-type: application/json');
         echo json_encode($arr);
-    }
-}
-
-function sendMail($senr, $recp, $subj, $body){
-    
-    //get ids of sender and recipients
-    $stmt = $conn->query("SELECT id FROM users WHERE username = $senr");
-    $m = $stmt->fetch();
-    $sid = $m["id"];
-    
-    $cdate = date("Y/m/d");
-    
-    //insert message for each recipient
-    foreach($recps as $recp){
-    
-        $stmt2 = $conn->query("SELECT id FROM users WHERE username = $recp");
-        $s = $stmt2->fetch();
-        $rid = $s["id"];
-    
-        // query to be sent
-        $q = "INSERT INTO messages(recipient_id, user_id, subject, body, date_sent) VALUES($sid, $rid,$subj, $body, $cdate)";
-    
-        $stmt3 = $conn->exec($q);
     }
 }

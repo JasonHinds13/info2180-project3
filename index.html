@@ -3,27 +3,51 @@
         <title>CheapoMail</title>
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
         <script src="main.js"></script>
+        <link rel="stylesheet" href="style.css" type="text/css" />
     </head>
     
     <body>
         
-        <h1>Create A User</h1>
+        <!-- Navigation Bar Area -->
         
-        <form action="cheapomail.php" method="POST">
-            <label for="firstname">First Name: </label>
-            <input name="firstname" id="fname" type="text"/> <br>
+        <div id="navbar">
+            <ul>
+                <li><a class="navbtn" id="home" href="/">Home</a></li>
+                <li><a class="navbtn" id="login" href="/">Login</a></li>
+                <li><a class="navbtn" id="smail" href="/">Send Mail</a></li>
+            </ul>
+        </div>
+        
+        <br><br>
+        
+        <!-- Ending of Navigation Bar Area -->
+        
+        <!-- Change Main Area for No Refresh AJAX -->
+        
+        <div id="main">
+        
+            <h1>Create A User</h1>
+        
+            <form action="cheapomail.php" method="POST">
+                <label for="firstname">First Name: </label>
+                <input name="firstname" id="fname" type="text"/> <br>
             
-            <label for="lastname">Last Name: </label>
-            <input name="lastname" id="lname" type="text"/> <br>
+                <label for="lastname">Last Name: </label>
+                <input name="lastname" id="lname" type="text"/> <br>
             
-            <label for="username">Username: </label>
-            <input name="username" id="uname" type="text"/> <br>
+                <label for="username">Username: </label>
+                <input name="username" id="uname" type="text"/> <br>
             
-            <label for="password">Password: </label>
-            <input name="password" id="pword" type="password"/> <br>
+                <label for="password">Password: </label>
+                <input name="password" id="pword" type="password"/> <br><br>
             
-            <input value="Submit" id="submit" type="submit"/>
-        </form>
+                <input value="Submit" id="submit" type="submit" class="button"/>
+            </form>
+        
+            <p id="status"></p>
+        </div>
+        
+        <!-- Ending of Main Area -->
         
     </body>
 </html>
