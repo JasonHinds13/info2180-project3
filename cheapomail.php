@@ -74,25 +74,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $rcvr = $_GET["id"]; //can get their username instead
     
     if (isset($rcver)){
-        getMail($rcvr);
-    }
-}
-
-// functions to be used
-
-function getMail($rcvr){
+        
+        $stmt = $conn->query("SELECT * FROM messages WHERE recipient_id = $rcvr");
+        $res = $stmt->fetchAll(PDO::ASSOC);
     
-    $stmt = $conn->query("SELECT * FROM messages WHERE recipient_id = $rcvr");
-    $res = $stmt->fetchAll(PDO::ASSOC);
-    
-    foreach($res as $mail){
-        $arr = array(
-            "user_id" => $mail["user_id"],
-            "subject" => $mail["subject"],
-            "body" => $mail["body"]
-            );
+        foreach($res as $mail){
+            $arr = array(
+                "user_id" => $mail["user_id"],
+                "subject" => $mail["subject"],
+                "body" => $mail["body"]
+                );
             
-        header('Content-type: application/json');
-        echo json_encode($arr);
+            header('Content-type: application/json');
+            echo json_encode($arr);
+        }
     }
 }
