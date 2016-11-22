@@ -12,9 +12,11 @@
         
         <div id="navbar">
             <ul>
-                <li><a class="navbtn" id="home" href="/">Home</a></li>
-                <li><a class="navbtn" id="login" href="/">Login</a></li>
-                <li><a class="navbtn" id="smail" href="/">Send Mail</a></li>
+                <li><a class="navbtn" id="home" href="home.html">Home</a></li>
+                <li><a class="navbtn" id="login" href="home.html">Login</a></li>
+                <li><a class="navbtn" id="smail" href="home.html">Send Mail</a></li>
+                <li><a class="navbtn" id="adduser" href="signup.html">Add User</a></li>
+                <li><a class="navbtn logout" id="logout" href="logout.html">Logout</a></li>
             </ul>
         </div>
         
@@ -26,22 +28,16 @@
         
         <div id="main">
         
-            <h1>Create A User</h1>
+            <h1>Login to use CheapoMail</h1>
         
-            <form id="form"> <!-- action="cheapomail.php" method="POST"> -->
-                <label for="firstname">First Name: </label>
-                <input name="firstname" id="fname" type="text"/> <br>
-            
-                <label for="lastname">Last Name: </label>
-                <input name="lastname" id="lname" type="text"/> <br>
-            
+            <form id="loginform">
                 <label for="username">Username: </label>
-                <input name="username" id="uname" type="text"/> <br>
+                <input name="username" id="usname" type="text"/> <br>
             
                 <label for="password">Password: </label>
-                <input name="password" id="pword" type="password"/> <br><br>
+                <input name="password" id="pass" type="password"/> <br><br>
             
-                <input value="Submit" id="submit" type="submit" class="button"/>
+                <input value="Submit" id="logbtn" type="submit" class="button"/>
             </form>
         
             <p id="status"></p>

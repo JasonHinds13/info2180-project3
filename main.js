@@ -1,6 +1,27 @@
+/* global $ */ //To prevent JSLint warnings on cloud9
+
 $(document).ready(function(){
     
-    $("#form").on('submit', function(event){
+    //make navbar hidden before login
+    if (window.location.pathname == "/"){
+        $("#navbar").hide();
+    }
+    else{
+        $("#navbar").show();
+    }
+    
+    //login
+    $("#logbtn").on('click', function(event){
+        
+        event.preventDefault();
+        
+        //make navbar visible if successful login
+        $("#navbar").show();
+        $("#main").load("home.html");
+    });
+    
+    // Create User Form
+    $("#signupform").on('submit', function(event){
         
         event.preventDefault();
         
@@ -11,7 +32,7 @@ $(document).ready(function(){
         
         var params = 'firstname='+fname+'&lastname='+lname+'&username='+uname+'&password='+pword;
         
-        var link = 'https://info2180-project3-jasonhinds13.c9users.io/cheapomail.php';
+        var link = 'cheapomail.php';
         
         var xmlhttp = new XMLHttpRequest();
         
@@ -29,6 +50,14 @@ $(document).ready(function(){
         xmlhttp.open("POST", link, true);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(params);
+    });
+    
+    //Nagivate using AJAX
+    $("#navbar ul li a").on('click', function(event){
+        event.preventDefault();
+        var page = $(this).attr("href");
+    
+        $("#main").load(page);
     });
     
 });
