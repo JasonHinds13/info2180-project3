@@ -6,9 +6,7 @@ $password = '';
 $dbname = 'cheapomail';
 
 // For sessions
-// session_start();
-// $_SESSION["username"] = "this user";
-// $_SESSION["user_id"] = "this";
+session_start();
 // session_unset(); //remove all session variables
 // session_destroy();
 
@@ -32,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $logpass = hash('sha256', $_POST["logpass"]);
 
     // mail to be sent
-    $senr = $_POST["sender"];
     $subj = $_POST["subject"];
     $recps = $_POST["recipients"];
     $body = $_POST["body"];
@@ -44,12 +41,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo 'Successfully Added User';
     }
     
+    //login
     if(isset($logname) && isset($logpass)){
         $sql = "SELECT * FROM users WHERE username = '$logname' AND password = '$logpass';";
         $stmt = $conn->query($sql);
-        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $res = $stmt->fetch();
         
-        if(count($res) > 0){
+        if($res != null){
+            $_SESSION["username"] = $res["username"];
+            $_SESSION["user_id"] = $res["id"];
             echo "User Found";
         }
         else{
@@ -58,25 +58,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     //send a message
-    else if (isset($senr) && isset($recps) && isset($subj) && isset($body)){
+    else if (isset($recps) && isset($subj) && isset($body)){
         
         //get id of sender
-        $stmt = $conn->query("SELECT id FROM users WHERE username = $senr");
-        $m = $stmt->fetch();
-        $sid = $m["id"];
+        $sid = $_SESSION["user_id"];
     
         $cdate = date("Y/m/d");
+        
+        $recps = explode(" ", $recp); //split strings by space
     
         //insert message for each recipient
         foreach($recps as $recp){
             
             //get id of receiver
-            $stmt2 = $conn->query("SELECT id FROM users WHERE username = $recp");
+            $stmt2 = $conn->query("SELECT id FROM users WHERE username = '$recps'");
             $s = $stmt2->fetch();
             $rid = $s["id"];
     
             // query to be sent
-            $q = "INSERT INTO messages(recipient_id, user_id, subject, body, date_sent) VALUES('$sid', '$rid', '$subj', '$body', '$cdate');";
+            $q = "INSERT INTO messages(recipient_id, user_id, subject, body, date_sent) VALUES('$rid', '$sid', '$subj', '$body', '$cdate');";
             $stmt3 = $conn->query($q);
         }
         

@@ -16,7 +16,7 @@ CREATE TABLE `users` (
 -- create table 'messages'
 
 DROP TABLE IF EXISTS `messages`;
-CREATE TABLE `users` (
+CREATE TABLE `messages` (
     `id` int NOT NULL auto_increment PRIMARY KEY,
     `recipient_id` int NOT NULL default '0',
     `user_id` int NOT NULL default '0',
@@ -28,7 +28,7 @@ CREATE TABLE `users` (
 -- create table messages_read
 
 DROP TABLE IF EXISTS `messages_read`;
-CREATE TABLE `users` (
+CREATE TABLE `messages_read` (
     `id` int NOT NULL auto_increment PRIMARY KEY,
     `message_id` int NOT NULL default '0',
     `reader_id` int NOT NULL default '0',

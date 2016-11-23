@@ -34,4 +34,32 @@ $(document).ready(function(){
         xmlhttp.send(params);
     });
     
+    //Send Message
+    $("#mailform").on('submit', function(event){
+        event.preventDefault();
+        
+        var recp = $("#recipient").val();
+        var subj = $("#subject").val();
+        var body = $("#body").val();
+        
+        var dat = "recipients="+recp+"&subject="+subj+"&body="+body;
+        
+        var xmlhttp = new XMLHttpRequest();
+        
+        xmlhttp.onreadystatechange = function(){
+            if (this.readyState == 4){
+                if (this.status == 200) {
+                    $("#status").text("Message Sent");
+                }
+                else{
+                    $("#status").text("Some Unknown Error Occured");
+                }
+            }
+        }
+        
+        xmlhttp.open("POST", "cheapomail.php", true);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(dat);
+    });
+    
 });
