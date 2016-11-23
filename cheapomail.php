@@ -7,8 +7,6 @@ $dbname = 'cheapomail';
 
 // For sessions
 session_start();
-// session_unset(); //remove all session variables
-// session_destroy();
 
 try{
     $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
@@ -34,11 +32,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $recps = $_POST["recipients"];
     $body = $_POST["body"];
     
+    // indicate logout
+    $lout = $_POST["logout"];
+    
     //add a user
     if (isset($uname) && isset($pword) && isset($fname) && isset($lname)){
         $sql = "INSERT INTO users(firstname, lastname, username, password) VALUES('$fname', '$lname', '$uname', '$pword');";
         $stmt = $conn->query($sql);
         echo 'Successfully Added User';
+    }
+    
+    //logout
+    if($lout == "true"){
+        session_unset();
+        session_destroy();
     }
     
     //login

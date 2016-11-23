@@ -48,9 +48,32 @@ $(document).ready(function(){
     //Nagivate using AJAX
     $("#navbar ul li a").on('click', function(event){
         
+        var logout = function(){
+            var xmlhttp = new XMLHttpRequest();
+            
+            var dat ="logout=true";
+        
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4){
+                    if (this.status == 200) {
+                        window.location.href = "/";
+                    }
+                }
+            };
+        
+            xmlhttp.open("POST", "cheapomail.php", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send(dat);
+        }
+        
         event.preventDefault();
         var page = $(this).attr("href");
-    
-        $("#main").load(page);
+        
+        if (page == "index.html"){
+            logout();
+        }
+        else{
+            $("#main").load(page);
+        }
     });
 });
