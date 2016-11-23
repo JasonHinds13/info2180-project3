@@ -26,6 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lname = $_POST["lastname"];
     $uname = $_POST["username"];
     $pword = hash('sha256', $_POST["password"]);
+    
+    // login
+    $logname = $_POST["logname"];
+    $logpass = hash('sha256', $_POST["logpass"]);
 
     // mail to be sent
     $senr = $_POST["sender"];
@@ -38,6 +42,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "INSERT INTO users(firstname, lastname, username, password) VALUES('$fname', '$lname', '$uname', '$pword');";
         $stmt = $conn->query($sql);
         echo 'Successfully Added User';
+    }
+    
+    if(isset($logname) && isset($logpass)){
+        $sql = "SELECT * FROM users WHERE username = '$logname' AND password = '$logpass';";
+        $stmt = $conn->query($sql);
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        if(count($res) > 0){
+            echo "User Found";
+        }
+        else{
+            echo "No User Found";
+        }
     }
     
     //send a message
