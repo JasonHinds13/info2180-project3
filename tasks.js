@@ -42,6 +42,8 @@ $(document).ready(function(){
         var subj = $("#subject").val();
         var body = $("#body").val();
         
+        recp = recp.replace(" ",",");
+        
         var dat = "recipients="+recp+"&subject="+subj+"&body="+body;
         
         var xmlhttp = new XMLHttpRequest();

@@ -72,13 +72,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
         $cdate = date("Y/m/d");
         
-        $recps = explode(" ", $recp); //split strings by space
+        $recps = explode(",", $recps); //split strings by comma
     
         //insert message for each recipient
         foreach($recps as $recp){
             
             //get id of receiver
-            $stmt2 = $conn->query("SELECT id FROM users WHERE username = '$recps'");
+            $stmt2 = $conn->query("SELECT id FROM users WHERE username = '$recp'");
             $s = $stmt2->fetch();
             $rid = $s["id"];
     
