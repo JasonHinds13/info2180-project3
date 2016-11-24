@@ -23,7 +23,6 @@ $(document).ready(function(){
                         if (xmlhttp.responseText == "User Found"){
                             $("#navbar").show();
                             $("#main").load("home.html");
-                            $("#navbar").show();
                             getmail();
                         }
                         else{
@@ -138,37 +137,20 @@ $(document).ready(function(){
     function getmail(){
         //handle getting mail
         var link = 'cheapomail.php?getmail=true';
-        console.log(link);
         
-        /*var xmlhttp = new XMLHttpRequest();
+        $.ajax(link,{
+            method: 'GET' 
+        }).done(function(res){
+            $("#mail").html(res);
+            $('.recv').hide();
+        
+            $('.showbutton').on('click', function(){
+                console.log("Ive been clicked");
+                $('.recv').show();
+            });
             
-        xmlhttp.onreadystatechange = function(){
-            if (this.readyState == 4){
-                if (this.status == 200) {
-                    $("#mail").html(xmlhttp.responseText);
-                }
-                else{
-                    $("#mail").html("<p>Some Error Occured</p>");
-                }
-            }
-        }*/
-        
-        //$.ajax(link,{
-            //method: 'GET' 
-        //}).done(function(res){
-            //$("#mail").html(res);
-        //}).fail(function(){
-            //$("#mail").html("<p>Some Error Occured</p>");
-        //});
-            
-        //xmlhttp.open("GET", link, true);
-        //xmlhttp.send();
-        
-        //$('.recv').hide();
-        
-        //$('.showbutton').on('click', function(){
-            //console.log("Ive been clicked");
-            //$('.recv').show();
-        //});
+        }).fail(function(){
+            $("#mail").html("<p>Some Error Occured</p>");
+        });
     }
 });

@@ -111,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             echo '<p>From: ' . $sendr["username"] . '</p>';
             echo '<p>Subject: ' . $mail["subject"] . '</p>';
             echo '<p class="recv">Message: ' . $mail["body"] . '</p>';
-            echo '<button class="showbutton">Show Message</button>';
+            echo '<input type="submit" class="showbutton" value="Show Message"/>';
             echo '</div> <br><br>';
         }
     }
