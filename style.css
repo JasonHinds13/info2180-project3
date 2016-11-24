@@ -43,3 +43,18 @@
     width: 100px;
     font-weight: bold;
 }
+
+.mail{
+    color: black;
+    width: 500px;
+    border: 1px solid black;
+    background-color: #00ffff;
+}
+
+.showbutton{
+    background-color: blue;
+    color: white;
+    border: none;
+    width: 100px;
+    font-weight: bold;
+}

@@ -107,9 +107,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $new = $conn->query("SELECT username FROM users WHERE id = '" . $mail["user_id"] . "';");
             $sendr = $new->fetch();
             
+            echo '<div class="mail">';
             echo '<p>From: ' . $sendr["username"] . '</p>';
             echo '<p>Subject: ' . $mail["subject"] . '</p>';
-            echo '<p>Message: ' . $mail["body"] . '</p><br>';
+            echo '<p class="recv">Message: ' . $mail["body"] . '</p>';
+            echo '<button class="showbutton">Show Message</button>';
+            echo '</div> <br><br>';
         }
     }
 }

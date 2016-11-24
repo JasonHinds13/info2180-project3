@@ -1,14 +1,8 @@
-/* global $ */ //To prevent JSLint warnings on cloud9
+/* global $ */
 
 $(document).ready(function(){
-     
-    //make navbar hidden before login
-    if (window.location.pathname == "/"){
-        $("#navbar").hide();
-    }
-    else{
-        $("#navbar").show();
-    }
+    
+    $("#navbar").hide(); //hide nav bar if not logged in
     
     //login
     $("#logbtn").on('click', function(event){
@@ -29,6 +23,8 @@ $(document).ready(function(){
                         if (xmlhttp.responseText == "User Found"){
                             $("#navbar").show();
                             $("#main").load("home.html");
+                            $("#navbar").show();
+                            getmail();
                         }
                         else{
                             $("#status").text("User Info Not Found! Check Login Info!");
@@ -76,4 +72,103 @@ $(document).ready(function(){
             $("#main").load(page);
         }
     });
+    
+    // Create User Form Submission
+    $("#signupform").on('submit', function(event){
+        
+        event.preventDefault();
+        
+        var fname = $("#fname").val();
+        var lname = $("#lname").val();
+        var uname = $("#uname").val();
+        var pword = $("#pword").val();
+        
+        var params = 'firstname='+fname+'&lastname='+lname+'&username='+uname+'&password='+pword;
+        
+        var link = 'cheapomail.php';
+        
+        var xmlhttp = new XMLHttpRequest();
+        
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4){
+                    if (this.status == 200) {
+                        $("#status").text("Successfully Added");
+                    }
+                    else{
+                        $("#status").text("Some Unknown Error Occured");
+                    }
+            }
+        };
+        
+        xmlhttp.open("POST", link, true);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(params);
+    });
+    
+    //Send Message
+    $("#mailform").on('submit', function(event){
+        event.preventDefault();
+        
+        var recp = $("#recipient").val();
+        var subj = $("#subject").val();
+        var body = $("#body").val();
+        
+        recp = recp.replace(" ",",");
+        
+        var dat = "recipients="+recp+"&subject="+subj+"&body="+body;
+        
+        var xmlhttp = new XMLHttpRequest();
+        
+        xmlhttp.onreadystatechange = function(){
+            if (this.readyState == 4){
+                if (this.status == 200) {
+                    $("#status").text("Message Sent");
+                }
+                else{
+                    $("#status").text("Some Unknown Error Occured");
+                }
+            }
+        }
+        
+        xmlhttp.open("POST", "cheapomail.php", true);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(dat);
+    });
+    
+    function getmail(){
+        //handle getting mail
+        var link = 'cheapomail.php?getmail=true';
+        console.log(link);
+        
+        /*var xmlhttp = new XMLHttpRequest();
+            
+        xmlhttp.onreadystatechange = function(){
+            if (this.readyState == 4){
+                if (this.status == 200) {
+                    $("#mail").html(xmlhttp.responseText);
+                }
+                else{
+                    $("#mail").html("<p>Some Error Occured</p>");
+                }
+            }
+        }*/
+        
+        //$.ajax(link,{
+            //method: 'GET' 
+        //}).done(function(res){
+            //$("#mail").html(res);
+        //}).fail(function(){
+            //$("#mail").html("<p>Some Error Occured</p>");
+        //});
+            
+        //xmlhttp.open("GET", link, true);
+        //xmlhttp.send();
+        
+        //$('.recv').hide();
+        
+        //$('.showbutton').on('click', function(){
+            //console.log("Ive been clicked");
+            //$('.recv').show();
+        //});
+    }
 });
