@@ -94,23 +94,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     // user id to recieve mail
-    //$rcvr = $_SESSION["user_id"];
-    $rcvr = $_GET["id"]; //can get their username instead
+    $rcvr = $_SESSION["user_id"];
+    $getmail = $_GET["getmail"];
     
-    if (isset($rcver)){
+    if ($getmail == 'true'){
         
-        $stmt = $conn->query("SELECT * FROM messages WHERE recipient_id = $rcvr");
-        $res = $stmt->fetchAll(PDO::ASSOC);
+        $stmt = $conn->query("SELECT * FROM messages WHERE recipient_id = '$rcvr' ORDER BY date_sent LIMIT 10;");
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
         foreach($res as $mail){
-            $arr = array(
-                "user_id" => $mail["user_id"],
-                "subject" => $mail["subject"],
-                "body" => $mail["body"]
-                );
             
-            header('Content-type: application/json');
-            echo json_encode($arr);
+            $new = $conn->query("SELECT username FROM users WHERE id = '" . $mail["user_id"] . "';");
+            $sendr = $new->fetch();
+            
+            echo '<p>From: ' . $sendr["username"] . '</p>';
+            echo '<p>Subject: ' . $mail["subject"] . '</p>';
+            echo '<p>Message: ' . $mail["body"] . '</p><br>';
         }
     }
 }

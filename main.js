@@ -1,7 +1,7 @@
 /* global $ */ //To prevent JSLint warnings on cloud9
 
 $(document).ready(function(){
-    
+     
     //make navbar hidden before login
     if (window.location.pathname == "/"){
         $("#navbar").hide();
@@ -31,7 +31,7 @@ $(document).ready(function(){
                             $("#main").load("home.html");
                         }
                         else{
-                            $("#status").text("User Not Info Found! Check Login Info!");
+                            $("#status").text("User Info Not Found! Check Login Info!");
                         }
                     }
                     else{
