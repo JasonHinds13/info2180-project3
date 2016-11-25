@@ -101,18 +101,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         
         $stmt = $conn->query("SELECT * FROM messages WHERE recipient_id = '$rcvr' ORDER BY date_sent LIMIT 10;");
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-        foreach($res as $mail){
-            
-            $new = $conn->query("SELECT username FROM users WHERE id = '" . $mail["user_id"] . "';");
-            $sendr = $new->fetch();
-            
-            echo '<div class="mail">';
-            echo '<p>From: ' . $sendr["username"] . '</p>';
-            echo '<p>Subject: ' . $mail["subject"] . '</p>';
-            echo '<p class="recv">Message: ' . $mail["body"] . '</p>';
-            echo '<input type="submit" class="showbutton" value="Show Message"/>';
-            echo '</div> <br><br>';
+        
+        if(count($res) == 0){
+            echo "No Mail Found";
+        }
+        
+        else{
+            foreach($res as $mail){
+                
+                $new = $conn->query("SELECT username FROM users WHERE id = '" . $mail["user_id"] . "';");
+                $sendr = $new->fetch();
+                
+                echo '<div class="mail">';
+                echo '<p>From: ' . $sendr["username"] . '</p>';
+                echo '<p>Subject: ' . $mail["subject"] . '</p>';
+                echo '<p class="recv">Message: ' . $mail["body"] . '</p>';
+                echo '<input type="submit" class="showbutton" value="Show Message"/>';
+                echo '</div> <br><br>';
+            }
         }
     }
 }

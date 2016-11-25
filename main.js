@@ -67,6 +67,11 @@ $(document).ready(function(){
         if (page == "index.html"){
             logout();
         }
+        
+        else if(page == "home.html"){
+            $("#main").load(page);
+            getmail();
+        }
         else{
             $("#main").load(page);
         }
@@ -145,8 +150,7 @@ $(document).ready(function(){
             $('.recv').hide();
         
             $('.showbutton').on('click', function(){
-                console.log("Ive been clicked");
-                $('.recv').show();
+                $(this).prev().slideToggle(400);
             });
             
         }).fail(function(){
