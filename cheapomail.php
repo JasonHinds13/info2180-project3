@@ -21,11 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fname = $_POST["firstname"];
     $lname = $_POST["lastname"];
     $uname = $_POST["username"];
-    $pword = hash('sha256', $_POST["password"]);
+    $pword = sha1($_POST["password"]);
     
     // login
     $logname = $_POST["logname"];
-    $logpass = hash('sha256', $_POST["logpass"]);
+    $logpass = sha1($_POST["logpass"]);
 
     // mail to be sent
     $subj = $_POST["subject"];
@@ -34,19 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // indicate logout
     $lout = $_POST["logout"];
-    
-    //add a user
-    if (isset($uname) && isset($pword) && isset($fname) && isset($lname)){
-        $sql = "INSERT INTO users(firstname, lastname, username, password) VALUES('$fname', '$lname', '$uname', '$pword');";
-        $stmt = $conn->query($sql);
-        echo 'Successfully Added User';
-    }
-    
-    //logout
-    if($lout == "true"){
-        session_unset();
-        session_destroy();
-    }
     
     //login
     if(isset($logname) && isset($logpass)){
@@ -64,8 +51,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     
+    //add a user
+    if (isset($uname) && isset($pword) && isset($fname) && isset($lname)){
+        $sql = "INSERT INTO users(firstname, lastname, username, password) VALUES('$fname', '$lname', '$uname', '$pword');";
+        $conn->exec($sql);
+        //$stmt = $conn->query($sql);
+        echo 'Successfully Added User';
+    }
+    
+    //logout
+    if($lout == "true"){
+        session_unset();
+        session_destroy();
+    }
+    
     //send a message
-    else if (isset($recps) && isset($subj) && isset($body)){
+    if (isset($recps) && isset($subj) && isset($body)){
         
         //get id of sender
         $sid = $_SESSION["user_id"];
@@ -84,7 +85,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
             // query to be sent
             $q = "INSERT INTO messages(recipient_id, user_id, subject, body, date_sent) VALUES('$rid', '$sid', '$subj', '$body', '$cdate');";
-            $stmt3 = $conn->query($q);
+            $conn->exec($q);
+            //$stmt3 = $conn->query($q);
         }
         
         echo 'Message Sent';
@@ -95,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     // user id to recieve mail
     $rcvr = $_SESSION["user_id"];
-    $getmail = $_GET["getmail"];
+    $getmail = strip_tags($_GET["getmail"]);
     
     if ($getmail == 'true'){
         
@@ -103,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
         if(count($res) == 0){
-            echo "No Mail Found";
+            echo "<h2>No Mail Found</h2>";
         }
         
         else{

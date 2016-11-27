@@ -34,3 +34,7 @@ CREATE TABLE `messages_read` (
     `reader_id` int NOT NULL default '0',
     `date_read` DATE
 );
+
+-- Create Admin Account
+
+INSERT INTO `users` VALUES(1,'admin','admin','admin', sha1('password'));

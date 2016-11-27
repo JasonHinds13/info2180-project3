@@ -14,13 +14,13 @@ $(document).ready(function(){
         
         var dat = "logname="+name+"&logpass="+pass;
         
-        var xmlhttp = new XMLHttpRequest();
+        var lxmlhttp = new XMLHttpRequest();
         
-        xmlhttp.onreadystatechange = function() {
+        lxmlhttp.onreadystatechange = function() {
             if (this.readyState == 4){
                     if (this.status == 200) {
                         //make navbar visible if successful login
-                        if (xmlhttp.responseText == "User Found"){
+                        if (lxmlhttp.responseText == "User Found"){
                             $("#navbar").show();
                             $("#main").load("home.html");
                             getmail();
@@ -35,20 +35,20 @@ $(document).ready(function(){
             }
         };
         
-        xmlhttp.open("POST", "cheapomail.php", true);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(dat);
+        lxmlhttp.open("POST", "cheapomail.php", true);
+        lxmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        lxmlhttp.send(dat);
     });
     
     //Nagivate using AJAX
     $("#navbar ul li a").on('click', function(event){
         
         var logout = function(){
-            var xmlhttp = new XMLHttpRequest();
+            var xxmlhttp = new XMLHttpRequest();
             
             var dat ="logout=true";
         
-            xmlhttp.onreadystatechange = function() {
+            xxmlhttp.onreadystatechange = function() {
                 if (this.readyState == 4){
                     if (this.status == 200) {
                         window.location.href = "/";
@@ -56,9 +56,9 @@ $(document).ready(function(){
                 }
             };
         
-            xmlhttp.open("POST", "cheapomail.php", true);
-            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xmlhttp.send(dat);
+            xxmlhttp.open("POST", "cheapomail.php", true);
+            xxmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xxmlhttp.send(dat);
         }
         
         event.preventDefault();
@@ -75,68 +75,6 @@ $(document).ready(function(){
         else{
             $("#main").load(page);
         }
-    });
-    
-    // Create User Form Submission
-    $("#signupform").on('submit', function(event){
-        
-        event.preventDefault();
-        
-        var fname = $("#fname").val();
-        var lname = $("#lname").val();
-        var uname = $("#uname").val();
-        var pword = $("#pword").val();
-        
-        var params = 'firstname='+fname+'&lastname='+lname+'&username='+uname+'&password='+pword;
-        
-        var link = 'cheapomail.php';
-        
-        var xmlhttp = new XMLHttpRequest();
-        
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4){
-                    if (this.status == 200) {
-                        $("#status").text("Successfully Added");
-                    }
-                    else{
-                        $("#status").text("Some Unknown Error Occured");
-                    }
-            }
-        };
-        
-        xmlhttp.open("POST", link, true);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(params);
-    });
-    
-    //Send Message
-    $("#mailform").on('submit', function(event){
-        event.preventDefault();
-        
-        var recp = $("#recipient").val();
-        var subj = $("#subject").val();
-        var body = $("#body").val();
-        
-        recp = recp.replace(" ",",");
-        
-        var dat = "recipients="+recp+"&subject="+subj+"&body="+body;
-        
-        var xmlhttp = new XMLHttpRequest();
-        
-        xmlhttp.onreadystatechange = function(){
-            if (this.readyState == 4){
-                if (this.status == 200) {
-                    $("#status").text("Message Sent");
-                }
-                else{
-                    $("#status").text("Some Unknown Error Occured");
-                }
-            }
-        }
-        
-        xmlhttp.open("POST", "cheapomail.php", true);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(dat);
     });
     
     function getmail(){
@@ -156,5 +94,9 @@ $(document).ready(function(){
         }).fail(function(){
             $("#mail").html("<p>Some Error Occured</p>");
         });
+    }
+    
+    function readMail(){
+        //handle reading message here
     }
 });
