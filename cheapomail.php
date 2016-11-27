@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
         $stmt2 = $conn->query("SELECT id FROM messages_read;");
-        $res2 = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+        $res2 = $stmt2->fetchAll(PDO::FETCH_COLUMN, 0);
         
         if(count($res) == 0){
             echo "<h2>No Mail Found</h2>";
