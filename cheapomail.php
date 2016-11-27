@@ -32,6 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $recps = $_POST["recipients"];
     $body = $_POST["body"];
     
+    //id of message read
+    $read_id = $_POST["read_id"];
+    
     // indicate logout
     $lout = $_POST["logout"];
     
@@ -63,6 +66,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if($lout == "true"){
         session_unset();
         session_destroy();
+    }
+    
+    if(isset($read_id)){
+        $rdate = date("Y/m/d");
+        $nid = $_SESSION["user_id"];
+        
+        $sql = "INSERT INTO messages_read(message_id, reader_id, date_read) VALUES('$read_id', '$nid', '$rdate');";
+        $conn->exec($sql);
+        
+        echo "Read";
     }
     
     //send a message
@@ -103,6 +116,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $stmt = $conn->query("SELECT * FROM messages WHERE recipient_id = '$rcvr' ORDER BY date_sent LIMIT 10;");
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
+        $stmt2 = $conn->query("SELECT id FROM messages_read;");
+        $res2 = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+        
         if(count($res) == 0){
             echo "<h2>No Mail Found</h2>";
         }
@@ -113,11 +129,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $new = $conn->query("SELECT username FROM users WHERE id = '" . $mail["user_id"] . "';");
                 $sendr = $new->fetch();
                 
-                echo '<div class="mail unread">';
+                if (in_array($mail["id"], $res2)){
+                    echo '<div class="mail read">';
+                }
+                else{
+                    echo '<div class="mail unread">';
+                }
+                
                 echo '<p>From: ' . $sendr["username"] . '</p>';
                 echo '<p>Subject: ' . $mail["subject"] . '</p>';
                 echo '<p class="recv">Message: ' . $mail["body"] . '</p>';
                 echo '<input type="submit" class="showbutton" value="Read"/>';
+                echo '<p class="hide">' . $mail["id"] . '</p>';
                 echo '</div> <br><br>';
             }
         }

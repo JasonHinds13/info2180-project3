@@ -89,7 +89,7 @@ $(document).ready(function(){
         
             $('.showbutton').on('click', function(){
                 $(this).prev().slideToggle(400);
-                readMail($(this).parent());
+                readMail($(this).parent(), $(this).next().text());
             });
             
         }).fail(function(){
@@ -97,8 +97,24 @@ $(document).ready(function(){
         });
     }
     
-    function readMail(div){
+    function readMail(div, mid){
         //handle reading message here
-        $(div).attr('class', 'mail read');
+        
+        var dat = "read_id="+mid;
+        var nxmlhttp = new XMLHttpRequest();
+        
+        nxmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4){
+                if (this.status == 200) {
+                    if (nxmlhttp.responseText == "Read"){
+                        $(div).attr('class', 'mail read');
+                    }
+                }
+            }
+        };
+        
+        nxmlhttp.open("POST", "cheapomail.php", true);
+        nxmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        nxmlhttp.send(dat);
     }
 });

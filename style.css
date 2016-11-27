@@ -66,3 +66,7 @@
 .read{
     font-weight: normal;
 }
+
+.hide{
+    display: none;
+}
