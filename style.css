@@ -58,3 +58,11 @@
     width: 100px;
     font-weight: bold;
 }
+
+.unread{
+    font-weight: bold;
+}
+
+.read{
+    font-weight: normal;
+}

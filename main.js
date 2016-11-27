@@ -89,6 +89,7 @@ $(document).ready(function(){
         
             $('.showbutton').on('click', function(){
                 $(this).prev().slideToggle(400);
+                readMail($(this).parent());
             });
             
         }).fail(function(){
@@ -96,7 +97,8 @@ $(document).ready(function(){
         });
     }
     
-    function readMail(){
+    function readMail(div){
         //handle reading message here
+        $(div).attr('class', 'mail read');
     }
 });

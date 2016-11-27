@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($uname) && isset($pword) && isset($fname) && isset($lname)){
         $sql = "INSERT INTO users(firstname, lastname, username, password) VALUES('$fname', '$lname', '$uname', '$pword');";
         $conn->exec($sql);
-        //$stmt = $conn->query($sql);
+        
         echo 'Successfully Added User';
     }
     
@@ -86,7 +86,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // query to be sent
             $q = "INSERT INTO messages(recipient_id, user_id, subject, body, date_sent) VALUES('$rid', '$sid', '$subj', '$body', '$cdate');";
             $conn->exec($q);
-            //$stmt3 = $conn->query($q);
         }
         
         echo 'Message Sent';
@@ -114,11 +113,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $new = $conn->query("SELECT username FROM users WHERE id = '" . $mail["user_id"] . "';");
                 $sendr = $new->fetch();
                 
-                echo '<div class="mail">';
+                echo '<div class="mail unread">';
                 echo '<p>From: ' . $sendr["username"] . '</p>';
                 echo '<p>Subject: ' . $mail["subject"] . '</p>';
                 echo '<p class="recv">Message: ' . $mail["body"] . '</p>';
-                echo '<input type="submit" class="showbutton" value="Show Message"/>';
+                echo '<input type="submit" class="showbutton" value="Read"/>';
                 echo '</div> <br><br>';
             }
         }
