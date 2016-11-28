@@ -68,14 +68,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         session_destroy();
     }
     
+    //read mail
     if(isset($read_id)){
         $rdate = date("Y/m/d");
         $nid = $_SESSION["user_id"];
         
-        $sql = "INSERT INTO messages_read(message_id, reader_id, date_read) VALUES('$read_id', '$nid', '$rdate');";
-        $conn->exec($sql);
+        $stat = $conn->query("SELECT message_id FROM messages_read;");
+        $arr = $stat->fetchAll(PDO::FETCH_COLUMN, 0);
         
-        echo "Read";
+        //so that message is only added to messages_read once
+        if (in_array($read_id, $arr) == false){
+            $sql = "INSERT INTO messages_read(message_id, reader_id, date_read) VALUES('$read_id', '$nid', '$rdate');";
+            $conn->exec($sql);
+        
+            echo "Read";
+        }
     }
     
     //send a message
@@ -116,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $stmt = $conn->query("SELECT * FROM messages WHERE recipient_id = '$rcvr' ORDER BY date_sent LIMIT 10;");
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        $stmt2 = $conn->query("SELECT id FROM messages_read;");
+        $stmt2 = $conn->query("SELECT message_id FROM messages_read;");
         $res2 = $stmt2->fetchAll(PDO::FETCH_COLUMN, 0);
         
         if(count($res) == 0){
