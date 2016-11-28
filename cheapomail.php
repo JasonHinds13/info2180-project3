@@ -138,6 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 
                 if (in_array($mail["id"], $res2)){
                     echo '<div class="mail read">';
+                    echo '<p>(Read)</p>';
                 }
                 else{
                     echo '<div class="mail unread">';
