@@ -56,6 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     //add a user
     if (isset($uname) && isset($pword) && isset($fname) && isset($lname)){
+        $fname = strip_tags($fname);
+        $lname = strip_tags($lname);
+        $uname = strip_tags($uname);
+        $pword = strip_tags($pword);
+        
         $sql = "INSERT INTO users(firstname, lastname, username, password) VALUES('$fname', '$lname', '$uname', '$pword');";
         $conn->exec($sql);
         
